@@ -12,7 +12,6 @@
 
   <meta name="theme-color" content="#ffffff">
 
-  <!-- iOS Web App -->
   <meta
     name="apple-mobile-web-app-capable"
     content="yes"
@@ -28,17 +27,10 @@
     content="Phealx Portal"
   >
 
-  <!-- Android / diğer mobil cihazlar -->
   <meta
     name="mobile-web-app-capable"
     content="yes"
   >
-
-
-  <!-- ==================================================
-       PHEALX PORTAL ANA EKRAN İKONU
-       BU KISMI DEĞİŞTİRME
-       ================================================== -->
 
   <link
     rel="apple-touch-icon"
@@ -57,7 +49,6 @@
     href="/phealx-portal-launcher/apple-touch-icon.png"
   >
 
-
   <title>Phealx Portal</title>
 
 
@@ -67,25 +58,18 @@
       box-sizing: border-box;
     }
 
-
     html,
     body {
-
       margin: 0;
       padding: 0;
-
       width: 100%;
       height: 100%;
-
     }
 
-
     body {
-
       min-height: 100vh;
 
       display: flex;
-
       align-items: center;
       justify-content: center;
 
@@ -105,24 +89,18 @@
         );
 
       color: #082f4b;
-
     }
 
-
     .launcher {
-
       width: 100%;
-      max-width: 420px;
+      max-width: 430px;
 
       padding: 40px 24px;
 
       text-align: center;
-
     }
 
-
     .portal-icon {
-
       display: block;
 
       width: 140px;
@@ -137,12 +115,9 @@
       box-shadow:
         0 20px 50px
         rgba(8, 47, 75, 0.20);
-
     }
 
-
     h1 {
-
       margin:
         26px
         0
@@ -155,12 +130,9 @@
       letter-spacing: -0.5px;
 
       color: #082f4b;
-
     }
 
-
-    p {
-
+    .description {
       margin: 0;
 
       font-size: 15px;
@@ -168,16 +140,35 @@
       line-height: 1.6;
 
       color: #657a89;
-
     }
 
+    .install-box {
+      margin-top: 28px;
+
+      padding:
+        18px
+        20px;
+
+      border-radius: 18px;
+
+      background:
+        rgba(7, 151, 173, 0.07);
+
+      color: #315d70;
+
+      font-size: 14px;
+
+      line-height: 1.55;
+    }
+
+    .install-box strong {
+      color: #087f96;
+    }
 
     .loading {
-
-      display: flex;
+      display: none;
 
       justify-content: center;
-
       align-items: center;
 
       gap: 10px;
@@ -189,12 +180,9 @@
       font-size: 13px;
 
       font-weight: 600;
-
     }
 
-
     .spinner {
-
       width: 20px;
       height: 20px;
 
@@ -209,45 +197,21 @@
 
       animation:
         spin .7s linear infinite;
-
     }
-
 
     @keyframes spin {
-
       to {
-
-        transform:
-          rotate(360deg);
-
+        transform: rotate(360deg);
       }
-
     }
 
-
-    .manual-link {
-
+    .standalone .install-box {
       display: none;
-
-      margin-top: 25px;
-
-      color: #087f96;
-
-      font-size: 13px;
-
-      text-decoration: none;
-
-      font-weight: 600;
-
     }
 
-
-    .manual-link.show {
-
-      display: inline-block;
-
+    .standalone .loading {
+      display: flex;
     }
-
 
   </style>
 
@@ -256,9 +220,10 @@
 
 <body>
 
-
-  <main class="launcher">
-
+  <main
+    id="launcher"
+    class="launcher"
+  >
 
     <img
       class="portal-icon"
@@ -266,16 +231,27 @@
       alt="Phealx Portal"
     >
 
-
     <h1>
       Phealx Portal
     </h1>
 
-
-    <p>
+    <p class="description">
       Phealx uygulamalarına tek noktadan erişim.
     </p>
 
+    <div class="install-box">
+
+      iPhone ana ekranına eklemek için:
+
+      <br><br>
+
+      Safari'de
+      <strong>Paylaş</strong>
+      →
+
+      <strong>Ana Ekrana Ekle</strong>
+
+    </div>
 
     <div class="loading">
 
@@ -287,36 +263,16 @@
 
     </div>
 
-
-    <a
-      id="manualLink"
-      class="manual-link"
-      href="#"
-    >
-      Portalı aç
-    </a>
-
-
   </main>
-
 
 
   <script>
 
     /*
     =====================================================
-    PHEALX PORTAL ADRESİ
-    =====================================================
-
-    BURAYA MEVCUT APPS SCRIPT /exec ADRESİNİ YAPIŞTIR.
-
-    Örnek:
-
-    https://script.google.com/a/macros/phealx.com/s/XXXXXXXX/exec
-
+    GERÇEK PHEALX PORTAL ADRESİ
     =====================================================
     */
-
 
     const PORTAL_URL =
       "https://script.google.com/a/macros/phealx.com/s/AKfycbwIm9CCXXkFOFEdz-B59OtnP5NCHFtG81RoyRAFVxX-rLVp378fsZeSLVwSA-hvcoOM/exec";
@@ -324,102 +280,86 @@
 
     /*
     =====================================================
-    MANUEL YEDEK LİNK
+    ANA EKRANDAN MI AÇILDI?
     =====================================================
+
+    iPhone'da Home Screen'den açılan web uygulamasını
+    standalone olarak algılamaya çalışıyoruz.
     */
 
-    const manualLink =
-      document.getElementById(
-        "manualLink"
+    function isStandalone() {
+
+      return (
+
+        window.navigator.standalone === true ||
+
+        window.matchMedia(
+          "(display-mode: standalone)"
+        ).matches
+
       );
 
-
-    manualLink.href =
-      PORTAL_URL;
-
+    }
 
 
     /*
     =====================================================
-    OTOMATİK YÖNLENDİRME
+    DAVRANIŞ
     =====================================================
 
-    Launcher önce tamamen yükleniyor.
+    Safari'de normal açılırsa:
+    - sayfada kalır
+    - ikon görünür
+    - kullanıcı Ana Ekrana Ekle yapabilir
 
-    Ardından 1,5 saniye sonra gerçek
-    Phealx Portal'a geçiliyor.
-
-    Ana ekran ikonu artık launcher URL'sine
-    bağlı olduğu için ikon yapısını değiştirmiyoruz.
-    =====================================================
+    Ana ekran ikonundan açılırsa:
+    - kısa açılış ekranı gösterilir
+    - gerçek Apps Script portala geçilir
     */
-
 
     window.addEventListener(
       "load",
       function () {
 
-
-        setTimeout(
-          function () {
-
-
-            if (
-              PORTAL_URL &&
-              !PORTAL_URL.includes(
-                "BURAYA_APPS_SCRIPT"
-              )
-            ) {
+        const launcher =
+          document.getElementById(
+            "launcher"
+          );
 
 
-              window.location.replace(
-                PORTAL_URL
-              );
+        if (isStandalone()) {
+
+          launcher.classList.add(
+            "standalone"
+          );
 
 
-            } else {
+          setTimeout(
+            function () {
 
+              if (
+                PORTAL_URL &&
+                !PORTAL_URL.includes(
+                  "BURAYA_APPS_SCRIPT"
+                )
+              ) {
 
-              manualLink.classList.add(
-                "show"
-              );
+                window.location.replace(
+                  PORTAL_URL
+                );
 
+              }
 
-            }
+            },
+            900
+          );
 
-
-          },
-          1500
-        );
-
+        }
 
       }
     );
 
-
-
-    /*
-    =====================================================
-    5 SANİYEDE PORTAL AÇILMAZSA
-    MANUEL BUTONU GÖSTER
-    =====================================================
-    */
-
-
-    setTimeout(
-      function () {
-
-        manualLink.classList.add(
-          "show"
-        );
-
-      },
-      5000
-    );
-
-
   </script>
-
 
 </body>
 
