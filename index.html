@@ -35,9 +35,10 @@
   >
 
 
-  <!-- =========================================
+  <!-- ==================================================
        PHEALX PORTAL ANA EKRAN İKONU
-       ========================================= -->
+       BU KISMI DEĞİŞTİRME
+       ================================================== -->
 
   <link
     rel="apple-touch-icon"
@@ -171,24 +172,17 @@
     }
 
 
-    .status {
+    .loading {
 
-      display: inline-flex;
+      display: flex;
+
+      justify-content: center;
 
       align-items: center;
 
-      gap: 8px;
+      gap: 10px;
 
-      margin-top: 26px;
-
-      padding:
-        10px
-        18px;
-
-      border-radius: 100px;
-
-      background:
-        rgba(7, 151, 173, 0.08);
+      margin-top: 28px;
 
       color: #087f96;
 
@@ -199,14 +193,58 @@
     }
 
 
-    .dot {
+    .spinner {
 
-      width: 8px;
-      height: 8px;
+      width: 20px;
+      height: 20px;
+
+      border:
+        2px solid
+        rgba(7,151,173,.18);
+
+      border-top-color:
+        #0797ad;
 
       border-radius: 50%;
 
-      background: #0797ad;
+      animation:
+        spin .7s linear infinite;
+
+    }
+
+
+    @keyframes spin {
+
+      to {
+
+        transform:
+          rotate(360deg);
+
+      }
+
+    }
+
+
+    .manual-link {
+
+      display: none;
+
+      margin-top: 25px;
+
+      color: #087f96;
+
+      font-size: 13px;
+
+      text-decoration: none;
+
+      font-weight: 600;
+
+    }
+
+
+    .manual-link.show {
+
+      display: inline-block;
 
     }
 
@@ -239,16 +277,148 @@
     </p>
 
 
-    <div class="status">
+    <div class="loading">
 
-      <span class="dot"></span>
+      <div class="spinner"></div>
 
-      Portal hazır
+      <span>
+        Portal açılıyor...
+      </span>
 
     </div>
 
 
+    <a
+      id="manualLink"
+      class="manual-link"
+      href="#"
+    >
+      Portalı aç
+    </a>
+
+
   </main>
+
+
+
+  <script>
+
+    /*
+    =====================================================
+    PHEALX PORTAL ADRESİ
+    =====================================================
+
+    BURAYA MEVCUT APPS SCRIPT /exec ADRESİNİ YAPIŞTIR.
+
+    Örnek:
+
+    https://script.google.com/a/macros/phealx.com/s/XXXXXXXX/exec
+
+    =====================================================
+    */
+
+
+    const PORTAL_URL =
+      "BURAYA_APPS_SCRIPT_EXEC_LINKINI_YAPISTIR";
+
+
+    /*
+    =====================================================
+    MANUEL YEDEK LİNK
+    =====================================================
+    */
+
+    const manualLink =
+      document.getElementById(
+        "manualLink"
+      );
+
+
+    manualLink.href =
+      PORTAL_URL;
+
+
+
+    /*
+    =====================================================
+    OTOMATİK YÖNLENDİRME
+    =====================================================
+
+    Launcher önce tamamen yükleniyor.
+
+    Ardından 1,5 saniye sonra gerçek
+    Phealx Portal'a geçiliyor.
+
+    Ana ekran ikonu artık launcher URL'sine
+    bağlı olduğu için ikon yapısını değiştirmiyoruz.
+    =====================================================
+    */
+
+
+    window.addEventListener(
+      "load",
+      function () {
+
+
+        setTimeout(
+          function () {
+
+
+            if (
+              PORTAL_URL &&
+              !PORTAL_URL.includes(
+                "BURAYA_APPS_SCRIPT"
+              )
+            ) {
+
+
+              window.location.replace(
+                PORTAL_URL
+              );
+
+
+            } else {
+
+
+              manualLink.classList.add(
+                "show"
+              );
+
+
+            }
+
+
+          },
+          1500
+        );
+
+
+      }
+    );
+
+
+
+    /*
+    =====================================================
+    5 SANİYEDE PORTAL AÇILMAZSA
+    MANUEL BUTONU GÖSTER
+    =====================================================
+    */
+
+
+    setTimeout(
+      function () {
+
+        manualLink.classList.add(
+          "show"
+        );
+
+      },
+      5000
+    );
+
+
+  </script>
 
 
 </body>
